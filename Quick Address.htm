@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Quick Address</title>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .ui-autocomplete-loading
+        {
+            background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat;
+        }
+        #searchBox
+        {
+            width: 25em;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            jQuery.support.cors = true;
+            $.ajax({
+                url: "http://tel.search.ch/api/?q=isolutions%20ag%20bern&key=40a64f101b6e6406c562814a37bdb84a",
+                success: function (a, b, c) {
+                    alert('d');
+                },
+                error: function (a, b, c) {
+                    alert('d');
+                },
+                complete: function (xhr, status) {
+                    if (status === 'error' || !xhr.responseText) {
+                        alert('d');
+                    }
+                    else {
+                        var data = xhr.responseText;
+                        alert('d');
+                    }
+                }
+            });
+        });
+        $(document).ajaxError(function (event, jqxhr, settings, exception) {
+            alert('d');
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <div class="ui-widget">
+            <label for="searchBox">
+                Search:
+            </label>
+            <input id="searchBox" />
+        </div>
+        <div id="searchResult" class="ui-widget" style="margin-top: 1em;">
+        </div>
+    </div>
+</body>
+</html>
