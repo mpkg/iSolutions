@@ -17,30 +17,55 @@
         }
     </style>
     <script type="text/javascript">
+        var MAX_NUM = 3;
+        var API_KEY = '40a64f101b6e6406c562814a37bdb84a';
+        var API_URL = 'http://tel.search.ch/api/';
+
+        jQuery.support.cors = true; // Required - Enable cross domain requests;
+
         $(document).ready(function () {
-            jQuery.support.cors = true;
-            $.ajax({
-                url: "http://tel.search.ch/api/?q=isolutions%20ag%20bern&key=40a64f101b6e6406c562814a37bdb84a",
-                success: function (a, b, c) {
-                    alert('d');
+            $("#searchBox").autocomplete({
+                source: function (request, response) {
+                    //Suggestions only after 4 letters in text field
+                    if (request.term.length < 4) { return; }
+                    $.ajax({
+                        url: API_URL,
+                        data: {
+                            key: API_KEY,
+                            q: request.term,
+                            maxnum: MAX_NUM // Limit suggestions to 3
+                        },
+                        success: function (data, textStatus, xmlHttpRequest) {
+                            entry = xmlHttpRequest.responseXML.getElementsByTagName('entry');
+                            for (i = 0; i < entry.length; i++) {
+                                alert(entry[i].childNodes[0].nodeName);
+                                response($.map(data.geonames, function (item) {
+                                    return {
+                                        label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+                                        value: item.name
+                                    }
+                                }));
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
                 },
-                error: function (a, b, c) {
-                    alert('d');
+                minLength: 1,
+                change: function (event, ui) {
+                    if (!ui.item)
+                        $("#searchBox").val('');
                 },
-                complete: function (xhr, status) {
-                    if (status === 'error' || !xhr.responseText) {
-                        alert('d');
-                    }
-                    else {
-                        var data = xhr.responseText;
-                        alert('d');
-                    }
+                select: function (event, ui) {
+                    displaySelectedItem(ui.item.data);
                 }
             });
         });
-        $(document).ajaxError(function (event, jqxhr, settings, exception) {
-            alert('d');
-        });
+
+        function displaySelectedItem(item) {
+            $("#searchResult").empty().append('Result: ' + item.name).append(' (Latitude: ' + item.point.coordinates[0] + ' Longitude: ' + item.point.coordinates[1] + ')');
+        }
     </script>
 </head>
 <body>

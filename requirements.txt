@@ -1,0 +1,9 @@
+Required:
+-	Suggestions only after 4 letters in text field (for query use the “q” parameter) - day 1
+-	Limit suggestions to 3 Suggestions (use “maxnum” parameter in request) - day 1
+-	In the Autocomplete suggestions show name, street and number, postalcode and city as preview day 2
+-	On account use “privat=0” as parameter (to exclude private people) on contact use “firma=0” (to exlude companies) and on lead do not use any of these two restrictions. - day 2/3
+
+Optional:
+-	Make request to the api only after a pause of 1 second (that the user have to wait before he get suggestions, and not get suggestions for every letter he is typing, because of the limit) - day 3
+-	Make the key used for the api configurable in the solution. - day 3
