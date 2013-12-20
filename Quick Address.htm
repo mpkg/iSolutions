@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Quick Address</title>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.js" type="text/javascript"></script>
-    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css"
-        rel="stylesheet" type="text/css" />
-    <style type="text/css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <style>
         .ui-autocomplete-loading
         {
-            background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat;
+            background: white right center no-repeat;
         }
         #searchBox
         {
@@ -17,18 +17,25 @@
         }
     </style>
     <script type="text/javascript">
+        var MIN_LENGTH = 4;
         var MAX_NUM = 3;
         var API_KEY = '40a64f101b6e6406c562814a37bdb84a';
         var API_URL = 'http://tel.search.ch/api/';
+        var PAUSE = 1000;
 
-        jQuery.support.cors = true; // Required - Enable cross domain requests;
+        var XrmObject = window.parent.Xrm;
+
+        $.support.cors = true; // Required - Enable cross domain requests;
 
         $(document).ready(function () {
             $("#searchBox").autocomplete({
+                minLength: MIN_LENGTH,
+                delay: PAUSE,
                 source: function (request, response) {
-                    //Suggestions only after 4 letters in text field
-                    if (request.term.length < 4) { return; }
+                    var sourceData;
+                    //Suggestions only after 4 letters in text field                    
                     $.ajax({
+                        async: false,
                         url: API_URL,
                         data: {
                             key: API_KEY,
@@ -36,35 +43,38 @@
                             maxnum: MAX_NUM // Limit suggestions to 3
                         },
                         success: function (data, textStatus, xmlHttpRequest) {
-                            entry = xmlHttpRequest.responseXML.getElementsByTagName('entry');
-                            for (i = 0; i < entry.length; i++) {
-                                alert(entry[i].childNodes[0].nodeName);
-                                response($.map(data.geonames, function (item) {
-                                    return {
-                                        label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-                                        value: item.name
-                                    }
-                                }));
-                            }
+                            feed = data.getElementsByTagName('feed');
+                            sourceData = $("entry", feed).map(function () {
+                                return {
+                                    label: $("title", this).text(),
+                                    value: $("id", this).text()
+                                };
+                            }).get();
+                            response(sourceData);
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             alert(errorThrown);
                         }
                     });
                 },
-                minLength: 1,
-                change: function (event, ui) {
-                    if (!ui.item)
-                        $("#searchBox").val('');
-                },
                 select: function (event, ui) {
-                    displaySelectedItem(ui.item.data);
+                    //setCRMFormFields(ui.item);
                 }
             });
         });
 
-        function displaySelectedItem(item) {
-            $("#searchResult").empty().append('Result: ' + item.name).append(' (Latitude: ' + item.point.coordinates[0] + ' Longitude: ' + item.point.coordinates[1] + ')');
+        function setCRMFormFields(addressInfo) {
+            if (XrmObject.Page.getAttribute('name')) XrmObject.Page.getAttribute('name').setValue(addressInfo.name); //account name
+            if (XrmObject.Page.getAttribute('address1_name')) XrmObject.Page.getAttribute('address1_name').setValue(addressInfo.name);
+            if (XrmObject.Page.getAttribute('address1_line1')) XrmObject.Page.getAttribute('address1_line1').setValue(addressInfo.line1);
+            if (XrmObject.Page.getAttribute('address1_line2')) XrmObject.Page.getAttribute('address1_line2').setValue(addressInfo.line2);
+            if (XrmObject.Page.getAttribute('address1_line3')) XrmObject.Page.getAttribute('address1_line3').setValue(addressInfo.line3);
+            if (XrmObject.Page.getAttribute('address1_city')) XrmObject.Page.getAttribute('address1_city').setValue(addressInfo.city);
+            if (XrmObject.Page.getAttribute('address1_stateorprovince')) XrmObject.Page.getAttribute('address1_stateorprovince').setValue(addressInfo.state);
+            if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue(addressInfo.country);
+            if (XrmObject.Page.getAttribute('address1_postalcode')) XrmObject.Page.getAttribute('address1_postalcode').setValue(addressInfo.postalcode);
+            if (XrmObject.Page.getAttribute('address1_telephone1')) XrmObject.Page.getAttribute('address1_telephone1').setValue(addressInfo.phone);
+            if (XrmObject.Page.getAttribute('websiteurl')) XrmObject.Page.getAttribute('websiteurl').setValue(addressInfo.website); //account website
         }
     </script>
 </head>
