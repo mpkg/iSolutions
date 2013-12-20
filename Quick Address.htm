@@ -46,7 +46,11 @@
                             feed = data.getElementsByTagName('feed');
                             sourceData = $("entry", feed).map(function () {
                                 return {
-                                    label: $("title", this).text(),
+                                    label: this.getElementsByTagName('tel:name')[0].textContent + ', ' +
+                                    this.getElementsByTagName('tel:street')[0].textContent + ', ' +
+                                    this.getElementsByTagName('tel:streetno')[0].textContent + ', ' +
+                                    this.getElementsByTagName('tel:zip')[0].textContent + ', ' +
+                                    this.getElementsByTagName('tel:city')[0].textContent,
                                     value: $("id", this).text()
                                 };
                             }).get();
@@ -58,7 +62,7 @@
                     });
                 },
                 select: function (event, ui) {
-                    //setCRMFormFields(ui.item);
+                    setCRMFormFields(ui.item);
                 }
             });
         });
