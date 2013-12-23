@@ -46,12 +46,23 @@
                             feed = data.getElementsByTagName('feed');
                             sourceData = $("entry", feed).map(function () {
                                 return {
-                                    label: this.getElementsByTagName('tel:name')[0].textContent + ', ' +
-                                    this.getElementsByTagName('tel:street')[0].textContent + ', ' +
-                                    this.getElementsByTagName('tel:streetno')[0].textContent + ', ' +
-                                    this.getElementsByTagName('tel:zip')[0].textContent + ', ' +
-                                    this.getElementsByTagName('tel:city')[0].textContent,
-                                    value: $("id", this).text()
+                                    label: getEntry('tel:name',this) + ', ' +
+                                    getEntry('tel:street', this) + ', ' +
+                                    getEntry('tel:streetno', this) + ', ' +
+                                    getEntry('tel:city', this) + ', ' +
+                                    getEntry('tel:zip', this),
+
+                                    value: getEntry('tel:firstname',this) + ', ' +
+                                    getEntry('tel:name', this) + ', ' +
+                                    getEntry('tel:street', this) + ', ' +
+                                    getEntry('tel:streetno', this) + ', ' +
+                                    getEntry('tel:city', this) + ', ' +
+                                    getEntry('tel:zip', this) + ', ' +
+                                    getEntry('tel:canton', this) + ', ' +
+                                    getEntry('tel:phone', this) + ', ' +
+                                    getEntry('tel:extra', this) + ', ' +
+                                    getEntry('tel:extra', this) + ', ' +
+                                    getEntry('tel:extra', this)
                                 };
                             }).get();
                             response(sourceData);
@@ -62,10 +73,22 @@
                     });
                 },
                 select: function (event, ui) {
-                    setCRMFormFields(ui.item);
+                    var addressinfo = ui.item.valueOf.split(",");
+                    setCRMFormFields(addressinfo);
                 }
             });
         });
+
+        function getEntry(fieldName, xml) {
+            var node = xml.getElementsByTagName(fieldName);
+            if (node != null) {                
+                return node[0].textContent;
+
+            }
+            else {
+                return '';
+            }
+        }
 
         function setCRMFormFields(addressInfo) {
             if (XrmObject.Page.getAttribute('name')) XrmObject.Page.getAttribute('name').setValue(addressInfo.name); //account name
