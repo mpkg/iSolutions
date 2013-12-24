@@ -3,8 +3,8 @@
 <head>
     <title>Quick Address</title>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
     <style>
         .ui-autocomplete-loading
@@ -18,12 +18,24 @@
     </style>
     <script type="text/javascript">
         var MIN_LENGTH = 4;
-        var MAX_NUM = 3;
+
         var API_KEY = '40a64f101b6e6406c562814a37bdb84a';
         var API_URL = 'http://tel.search.ch/api/';
         var PAUSE = 1000;
+        var parameterMaxnum = 3;
+        var parameterPrivat = 1;
+        var parameterFirma = 1;
 
         var XrmObject = window.parent.Xrm;
+
+//        set PRIVAT, FIRMA as per current entity
+//        var entityName = XrmObject.Page.data.entity.getEntityName();
+//        if (entityName == 'account') {
+//            parameterPrivat = 0;
+//        }
+//        else if (entityName == 'contact') {
+//            parameterFirma = 0;
+//        }
 
         $.support.cors = true; // Required - Enable cross domain requests;
 
@@ -40,29 +52,31 @@
                         data: {
                             key: API_KEY,
                             q: request.term,
-                            maxnum: MAX_NUM // Limit suggestions to 3
+                            maxnum: parameterMaxnum,    // Limit suggestions to 3
+                            privat: parameterPrivat,
+                            firma: parameterFirma
                         },
                         success: function (data, textStatus, xmlHttpRequest) {
                             feed = data.getElementsByTagName('feed');
                             sourceData = $("entry", feed).map(function () {
                                 return {
-                                    label: getEntry('tel:name',this) + ', ' +
+                                    label: getEntry('tel:name', this) + ', ' +
                                     getEntry('tel:street', this) + ', ' +
                                     getEntry('tel:streetno', this) + ', ' +
                                     getEntry('tel:city', this) + ', ' +
                                     getEntry('tel:zip', this),
 
-                                    value: getEntry('tel:firstname',this) + ', ' +
+                                    value: getEntry('tel:firstname', this) + ', ' +
                                     getEntry('tel:name', this) + ', ' +
-                                    getEntry('tel:street', this) + ', ' +
                                     getEntry('tel:streetno', this) + ', ' +
+                                    getEntry('tel:street', this) + ', ' +
                                     getEntry('tel:city', this) + ', ' +
                                     getEntry('tel:zip', this) + ', ' +
                                     getEntry('tel:canton', this) + ', ' +
                                     getEntry('tel:phone', this) + ', ' +
-                                    getEntry('tel:extra', this) + ', ' +
-                                    getEntry('tel:extra', this) + ', ' +
-                                    getEntry('tel:extra', this)
+                                    getEntry('tel:extra', this, 'fax') + ', ' +
+                                    getEntry('tel:extra', this, 'email') + ', ' +
+                                    getEntry('tel:extra', this, 'website')
                                 };
                             }).get();
                             response(sourceData);
@@ -73,17 +87,29 @@
                     });
                 },
                 select: function (event, ui) {
-                    var addressinfo = ui.item.valueOf.split(",");
+                    var addressinfo = ui.item.value.split(",");
                     setCRMFormFields(addressinfo);
                 }
             });
         });
 
-        function getEntry(fieldName, xml) {
+        function getEntry(fieldName, xml, type) {
             var node = xml.getElementsByTagName(fieldName);
-            if (node != null) {                
-                return node[0].textContent;
+            if (node.length > 0) {
 
+                //for extra nodes
+                if (type && node[0].attributes.length > 0) {
+                    if (type == node[0].attributes[0].nodeValue) {
+                        return node[0].textContent;
+                    }
+                    else {
+                        return '';
+                    }
+                }
+                //for all other nodes
+                else {
+                    return node[0].textContent;
+                }
             }
             else {
                 return '';
@@ -91,17 +117,18 @@
         }
 
         function setCRMFormFields(addressInfo) {
-            if (XrmObject.Page.getAttribute('name')) XrmObject.Page.getAttribute('name').setValue(addressInfo.name); //account name
-            if (XrmObject.Page.getAttribute('address1_name')) XrmObject.Page.getAttribute('address1_name').setValue(addressInfo.name);
-            if (XrmObject.Page.getAttribute('address1_line1')) XrmObject.Page.getAttribute('address1_line1').setValue(addressInfo.line1);
-            if (XrmObject.Page.getAttribute('address1_line2')) XrmObject.Page.getAttribute('address1_line2').setValue(addressInfo.line2);
-            if (XrmObject.Page.getAttribute('address1_line3')) XrmObject.Page.getAttribute('address1_line3').setValue(addressInfo.line3);
-            if (XrmObject.Page.getAttribute('address1_city')) XrmObject.Page.getAttribute('address1_city').setValue(addressInfo.city);
-            if (XrmObject.Page.getAttribute('address1_stateorprovince')) XrmObject.Page.getAttribute('address1_stateorprovince').setValue(addressInfo.state);
-            if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue(addressInfo.country);
-            if (XrmObject.Page.getAttribute('address1_postalcode')) XrmObject.Page.getAttribute('address1_postalcode').setValue(addressInfo.postalcode);
-            if (XrmObject.Page.getAttribute('address1_telephone1')) XrmObject.Page.getAttribute('address1_telephone1').setValue(addressInfo.phone);
-            if (XrmObject.Page.getAttribute('websiteurl')) XrmObject.Page.getAttribute('websiteurl').setValue(addressInfo.website); //account website
+            if (XrmObject.Page.getAttribute('name')) XrmObject.Page.getAttribute('name').setValue(addressInfo[1]); //account name
+            if (XrmObject.Page.getAttribute('address1_name')) XrmObject.Page.getAttribute('address1_name').setValue(addressInfo[1]);
+            if (XrmObject.Page.getAttribute('address1_line1')) XrmObject.Page.getAttribute('address1_line1').setValue(addressInfo[2]);
+            if (XrmObject.Page.getAttribute('address1_line2')) XrmObject.Page.getAttribute('address1_line2').setValue(addressInfo[3]);
+            //            if (XrmObject.Page.getAttribute('address1_line3')) XrmObject.Page.getAttribute('address1_line3').setValue(addressInfo.line3);
+            if (XrmObject.Page.getAttribute('address1_city')) XrmObject.Page.getAttribute('address1_city').setValue(addressInfo[4]);
+            if (XrmObject.Page.getAttribute('address1_stateorprovince')) XrmObject.Page.getAttribute('address1_stateorprovince').setValue(addressInfo[6]);
+            if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue('Switzerland');
+            if (XrmObject.Page.getAttribute('address1_postalcode')) XrmObject.Page.getAttribute('address1_postalcode').setValue(addressInfo[5]);
+            if (XrmObject.Page.getAttribute('address1_telephone1')) XrmObject.Page.getAttribute('address1_telephone1').setValue(addressInfo[7]);
+            if (XrmObject.Page.getAttribute('emailaddress1')) XrmObject.Page.getAttribute('emailaddress1').setValue(addressInfo[9]);
+            if (XrmObject.Page.getAttribute('websiteurl')) XrmObject.Page.getAttribute('websiteurl').setValue(addressInfo[10]); //account website
         }
     </script>
 </head>
