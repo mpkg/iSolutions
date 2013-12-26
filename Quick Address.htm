@@ -6,10 +6,6 @@
     <script type="text/javascript" src="jquery_1.9.1.js"></script>
     <script type="text/javascript" src="jquery_ui.min.js"></script>
     <style>
-        .ui-autocomplete-loading
-        {
-            background: white right center no-repeat;
-        }
         #searchBox
         {
             width: 25em;
@@ -33,13 +29,13 @@
         var XrmObject = window.parent.Xrm;
 
         //        set PRIVAT, FIRMA as per current entity
-        //        var entityName = XrmObject.Page.data.entity.getEntityName();
-        //        if (entityName == 'account') {
-        //            parameterPrivat = 0;
-        //        }
-        //        else if (entityName == 'contact') {
-        //            parameterFirma = 0;
-        //        }
+        var entityName = XrmObject.Page.data.entity.getEntityName();
+        if (entityName == 'account') {
+            parameterPrivat = 0;
+        }
+        else if (entityName == 'contact') {
+            parameterFirma = 0;
+        }
 
         $.support.cors = true; // Required - Enable cross domain requests;
 
