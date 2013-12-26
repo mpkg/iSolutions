@@ -2,10 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Quick Address</title>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <link rel="stylesheet" href="jquery_ui.css">
+    <script type="text/javascript" src="jquery_1.9.1.js"></script>
+    <script type="text/javascript" src="jquery_ui.min.js"></script>
     <style>
         .ui-autocomplete-loading
         {
@@ -14,6 +13,11 @@
         #searchBox
         {
             width: 25em;
+        }
+        body
+        {
+            font-family: "Trebuchet MS" , "Helvetica" , "Arial" , "Verdana" , "sans-serif";
+            font-size: 62.5%;
         }
     </style>
     <script type="text/javascript">
@@ -28,14 +32,14 @@
 
         var XrmObject = window.parent.Xrm;
 
-//        set PRIVAT, FIRMA as per current entity
-//        var entityName = XrmObject.Page.data.entity.getEntityName();
-//        if (entityName == 'account') {
-//            parameterPrivat = 0;
-//        }
-//        else if (entityName == 'contact') {
-//            parameterFirma = 0;
-//        }
+        //        set PRIVAT, FIRMA as per current entity
+        //        var entityName = XrmObject.Page.data.entity.getEntityName();
+        //        if (entityName == 'account') {
+        //            parameterPrivat = 0;
+        //        }
+        //        else if (entityName == 'contact') {
+        //            parameterFirma = 0;
+        //        }
 
         $.support.cors = true; // Required - Enable cross domain requests;
 
