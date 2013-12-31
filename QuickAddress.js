@@ -1,7 +1,7 @@
 // JScript source code
 var MIN_LENGTH = 4;
 
-var API_KEY = '40a64f101b6e6406c562814a37bdb84a';
+var API_KEY;
 var API_URL = 'http://tel.search.ch/api/';
 var PAUSE = 1000;
 var parameterMaxnum = 3;
@@ -22,6 +22,7 @@ else if (entityName == 'contact') {
 $.support.cors = true; // Required - Enable cross domain requests;
 
 $(document).ready(function () {
+    getDataParam();
     $("#searchBox").autocomplete({
         minLength: MIN_LENGTH,
         delay: PAUSE,
@@ -81,7 +82,7 @@ function getEntryLabel(fieldName, xml) {
         return node[0].textContent + ',';
     }
     else {
-        return ;
+        return;
     }
 }
 
@@ -115,10 +116,56 @@ function setCRMFormFields(addressInfo) {
     //if (XrmObject.Page.getAttribute('address1_line3')) XrmObject.Page.getAttribute('address1_line3').setValue(addressInfo.line3);
     if (XrmObject.Page.getAttribute('address1_city') && addressInfo[4] != ' ') XrmObject.Page.getAttribute('address1_city').setValue(addressInfo[4]);
     if (XrmObject.Page.getAttribute('address1_stateorprovince') && addressInfo[6] != ' ') XrmObject.Page.getAttribute('address1_stateorprovince').setValue(addressInfo[6]);
-    //if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue('Switzerland');
+    if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue('Switzerland');
     if (XrmObject.Page.getAttribute('address1_postalcode') && addressInfo[5] != ' ') XrmObject.Page.getAttribute('address1_postalcode').setValue(addressInfo[5]);
     if (XrmObject.Page.getAttribute('address1_telephone1') && addressInfo[7] != ' ') XrmObject.Page.getAttribute('address1_telephone1').setValue(addressInfo[7]);
     if (XrmObject.Page.getAttribute('fax') && addressInfo[8] != ' ') XrmObject.Page.getAttribute('fax').setValue(addressInfo[8]);
     if (XrmObject.Page.getAttribute('emailaddress1') && addressInfo[9] != ' ') XrmObject.Page.getAttribute('emailaddress1').setValue(addressInfo[9]);
     if (XrmObject.Page.getAttribute('websiteurl') && addressInfo[10] != ' ') XrmObject.Page.getAttribute('websiteurl').setValue(addressInfo[10]); //account website
+}
+
+function getDataParam() {
+    //Get the any query string parameters and load them
+    //into the vals array
+
+    var vals = new Array();
+    if (location.search != "") {
+        vals = location.search.substr(1).split("&");
+        for (var i in vals) {
+            vals[i] = vals[i].replace(/\+/g, " ").split("=");
+        }
+        //look for the parameter named 'data'
+        var found = false;
+        for (var i in vals) {
+            if (vals[i][0].toLowerCase() == "data") {
+                parseDataValue(vals[i][1]);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        { noParams(); }
+    }
+    else {
+        noParams();
+    }
+}
+
+function parseDataValue(datavalue) {
+    if (datavalue != "") {
+        var vals = new Array();
+
+        vals = decodeURIComponent(datavalue).split("&");
+        for (var i in vals) {
+            vals[i] = vals[i].replace(/\+/g, " ").split("=");
+        }
+        API_KEY = vals[0][0];
+    }
+    else {
+        noParams();
+    }
+}
+
+function noParams() {
+    alert('Quick Addess: API Key not provided');
 }
