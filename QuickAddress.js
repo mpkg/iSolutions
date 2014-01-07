@@ -9,7 +9,6 @@
     var parameterFirma = 1;
     var API_KEY;
     var addressinfo;
-    var q;
 }
 
 //Xrm reference
@@ -78,12 +77,13 @@ var XrmObject = window.parent.Xrm;
 $(document).ready(function () {
     getDataParam();
     //define jquery auto complete function
-    $("#searchfield").autocomplete({
+    $("#searchfield")
+    .autocomplete({
         minLength: MIN_LENGTH, // minimum characters required to make an API call
         delay: PAUSE, //pause before making a request to tel.search api
         source: function (request, response) {
             var sourceData;
-            q = request.term;
+
             $.ajax({
                 url: API_URL,
                 data: {
@@ -125,13 +125,10 @@ $(document).ready(function () {
             });
         },
         select: function (event, ui) {
-            addressinfo = ui.item.value.split(",");
+            addressinfo = ui.item.value.split("|");
             setCRMFormFields(addressinfo);
-        },
-        close: function (event, ui) {
-            $('#searchfield').val(q);
         }
-    });
+    })
 });
 
 function getEntryLabel(fieldName, xml) {
@@ -167,11 +164,11 @@ function getEntryValue(fieldName, xml, type) {
         }
         //for all other nodes
         else {
-            return node[0].textContent + ',';
+            return node[0].textContent + '|';
         }
     }
     else if (fieldName == 'tel:firstname') {
-        return ',';
+        return '|';
     }
     else {
         return '';
