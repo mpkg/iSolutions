@@ -7,3 +7,7 @@ Required:
 Optional:
 -	Make request to the api only after a pause of 1 second (that the user have to wait before he get suggestions, and not get suggestions for every letter he is typing, because of the limit) - day 3
 -	Make the key used for the api configurable in the solution. - day 3
+
+- google style results ( rest of the address is smaller than the name (on contact than first an lastname) and the text written in the field is bold.)
+- isolutions publisher with is_ prefix
+
