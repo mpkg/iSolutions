@@ -76,6 +76,7 @@ var XrmObject = window.parent.Xrm;
 
 $(document).ready(function () {
     getDataParam();
+    jQuery.support.cors = true;
     //define jquery auto complete function
     $("#searchfield")
     .autocomplete({
