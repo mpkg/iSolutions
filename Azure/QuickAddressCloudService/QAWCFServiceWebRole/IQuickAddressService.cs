@@ -13,6 +13,7 @@ namespace QuickAddressWCF
     public interface IQuickAddressSErvice
     {
         [OperationContract]
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Xml)]
         string GetData();       
     }
     
