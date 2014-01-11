@@ -13,6 +13,7 @@ namespace QuickAddressWCF
     public interface IQuickAddressSErvice
     {
         [OperationContract]
+        [WebGet(UriTemplate = "/Get") ]
         string GetData();       
     }
     
