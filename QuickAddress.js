@@ -2,7 +2,7 @@
 //Constants & Variables
 {
     var MIN_LENGTH = 4;
-    var API_URL = 'http://tel.search.ch/api/';
+    var API_URL = 'https://quickaddress.cloudapp.net/QuickAddressService.svc/Get';
     var PAUSE = 1000;
     var parameterMaxnum = 3;
     var parameterPrivat = 1;
@@ -86,15 +86,11 @@ $(document).ready(function () {
             var sourceData;
 
             $.ajax({
-                url: API_URL,
-                data: {
-                    key: API_KEY,
-                    q: request.term,
-                    maxnum: parameterMaxnum,    // Limit suggestions to 3
-                    privat: parameterPrivat,
-                    firma: parameterFirma
-                },
-                success: function (data, textStatus, xmlHttpRequest) {
+                type: 'GET',
+                url: API_URL + '/' + request.term + '/' + API_KEY + '/' + parameterMaxnum + '/' + parameterPrivat + '/' + parameterFirma,
+                contentType: 'application/xml; charset=utf-8',
+                dataType: "xml",
+                success: function (data, textStatus, xmlHttpRequest) {                    
                     feed = data.getElementsByTagName('feed');
                     sourceData = $("entry", feed).map(function () {
                         return {
@@ -157,7 +153,7 @@ function getEntryValue(fieldName, xml, type) {
         //for extra nodes
         if (type && node[0].attributes.length > 0) {
             if (type == node[0].attributes[0].nodeValue) {
-                return node[0].textContent + ',';
+                return node[0].textContent + '|';
             }
             else {
                 return '';
