@@ -33,9 +33,7 @@ namespace QuickAddressWCF
             string dwml = string.Empty;
 
             System.Net.WebClient webClient = new System.Net.WebClient();
-
-            byte[] abc = webClient.DownloadData(requestURL);
-            dwml = System.Text.Encoding.UTF8.GetString(abc);
+            dwml = webClient.DownloadString(requestURL);
 
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(dwml);

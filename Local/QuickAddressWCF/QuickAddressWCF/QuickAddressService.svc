@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="QuickAddressWCF.QuickAddressService" CodeBehind="QuickAddressService.svc.cs" %>

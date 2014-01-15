@@ -98,8 +98,8 @@ $(document).ready(function () {
                                                 getEntryLabel('tel:name', this) +
                                                 getEntryLabel('tel:street', this) +
                                                 getEntryLabel('tel:streetno', this) +
-                                                getEntryLabel('tel:city', this) +
-                                                getEntryLabel('tel:zip', this),
+                                                getEntryLabel('tel:zip', this) +
+                                                getEntryLabel('tel:city', this),
 
                             value: getEntryValue('tel:firstname', this) +
                                                 getEntryValue('tel:name', this) +
@@ -131,14 +131,14 @@ $(document).ready(function () {
 function getEntryLabel(fieldName, xml) {
     var node = xml.getElementsByTagName(fieldName);
     if (node.length > 0) {
-        if (fieldName == 'tel:firstname') {
+        if (fieldName == 'tel:firstname' || fieldName == 'tel:street') {
             return node[0].textContent + ' ';
         }
-        else if (fieldName == 'tel:zip') {
+        else if (fieldName == 'tel:city') {
             return node[0].textContent;
         }
         else {
-            return node[0].textContent + ',';
+            return node[0].textContent + ', ';
         }
     }
     else {
