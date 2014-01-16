@@ -90,7 +90,7 @@ $(document).ready(function () {
                 url: API_URL + '/' + request.term + '/' + API_KEY + '/' + parameterMaxnum + '/' + parameterPrivat + '/' + parameterFirma,
                 contentType: 'application/xml; charset=utf-8',
                 dataType: "xml",
-                success: function (data, textStatus, xmlHttpRequest) {                    
+                success: function (data, textStatus, xmlHttpRequest) {
                     feed = data.getElementsByTagName('feed');
                     sourceData = $("entry", feed).map(function () {
                         return {
@@ -131,7 +131,7 @@ $(document).ready(function () {
 function getEntryLabel(fieldName, xml) {
     var node = xml.getElementsByTagName(fieldName);
     if (node.length > 0) {
-        if (fieldName == 'tel:firstname' || fieldName == 'tel:street') {
+        if (fieldName == 'tel:firstname' || fieldName == 'tel:street' || fieldName == 'tel:zip') {
             return node[0].textContent + ' ';
         }
         else if (fieldName == 'tel:city') {
@@ -176,8 +176,7 @@ function setCRMFormFields(addressInfo) {
     if (XrmObject.Page.getAttribute('firstname')) XrmObject.Page.getAttribute('firstname').setValue(addressInfo[0]);
     if (XrmObject.Page.getAttribute('lastname')) XrmObject.Page.getAttribute('lastname').setValue(addressInfo[1]);
     if (XrmObject.Page.getAttribute('name')) XrmObject.Page.getAttribute('name').setValue(addressInfo[1]);
-    if (XrmObject.Page.getAttribute('address1_line1')) XrmObject.Page.getAttribute('address1_line1').setValue(addressInfo[2]);
-    if (XrmObject.Page.getAttribute('address1_line2')) XrmObject.Page.getAttribute('address1_line2').setValue(addressInfo[3]);
+    if (XrmObject.Page.getAttribute('address1_line1')) XrmObject.Page.getAttribute('address1_line1').setValue(addressInfo[3] + ' ' + addressInfo[2]);
     if (XrmObject.Page.getAttribute('address1_city')) XrmObject.Page.getAttribute('address1_city').setValue(addressInfo[4]);
     if (XrmObject.Page.getAttribute('address1_stateorprovince')) XrmObject.Page.getAttribute('address1_stateorprovince').setValue(addressInfo[6]);
     if (XrmObject.Page.getAttribute('address1_country')) XrmObject.Page.getAttribute('address1_country').setValue('Switzerland');
