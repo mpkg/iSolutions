@@ -1,0 +1,72 @@
+<ImportExportXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Entities></Entities>
+  <Roles></Roles>
+  <Workflows></Workflows>
+  <FieldSecurityProfiles></FieldSecurityProfiles>
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets />
+  <WebResources>
+    <WebResource>
+      <WebResourceId>{19c1e538-b476-e311-9ae3-000c2936ae10}</WebResourceId>
+      <Name>is_/QuickAddress/jquery_1.9.1.min.js</Name>
+      <DisplayName>jquery_1.9.1.min.js</DisplayName>
+      <WebResourceType>3</WebResourceType>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <CanBeDeleted>1</CanBeDeleted>
+      <IsHidden>0</IsHidden>
+      <FileName>/WebResources/is_QuickAddressjquery_191minjs19C1E538-B476-E311-9AE3-000C2936AE10</FileName>
+    </WebResource>
+    <WebResource>
+      <WebResourceId>{0ca2276b-b476-e311-9ae3-000c2936ae10}</WebResourceId>
+      <Name>is_/QuickAddress/jquery_ui.css</Name>
+      <DisplayName>jquery_ui.css</DisplayName>
+      <WebResourceType>2</WebResourceType>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <CanBeDeleted>1</CanBeDeleted>
+      <IsHidden>0</IsHidden>
+      <FileName>/WebResources/is_QuickAddressjquery_uicss0CA2276B-B476-E311-9AE3-000C2936AE10</FileName>
+    </WebResource>
+    <WebResource>
+      <WebResourceId>{3653f185-b476-e311-9ae3-000c2936ae10}</WebResourceId>
+      <Name>is_/QuickAddress/jquery_ui.min.js</Name>
+      <DisplayName>jquery_ui.min.js</DisplayName>
+      <WebResourceType>3</WebResourceType>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <CanBeDeleted>1</CanBeDeleted>
+      <IsHidden>0</IsHidden>
+      <FileName>/WebResources/is_QuickAddressjquery_uiminjs3653F185-B476-E311-9AE3-000C2936AE10</FileName>
+    </WebResource>
+    <WebResource>
+      <WebResourceId>{435a7f98-b476-e311-9ae3-000c2936ae10}</WebResourceId>
+      <Name>is_/QuickAddress/QuickAddress.html</Name>
+      <DisplayName>QuickAddress.html</DisplayName>
+      <WebResourceType>1</WebResourceType>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <CanBeDeleted>1</CanBeDeleted>
+      <IsHidden>0</IsHidden>
+      <FileName>/WebResources/is_QuickAddressQuickAddresshtml435A7F98-B476-E311-9AE3-000C2936AE10</FileName>
+    </WebResource>
+    <WebResource>
+      <WebResourceId>{b59201aa-b476-e311-9ae3-000c2936ae10}</WebResourceId>
+      <Name>is_/QuickAddress/QuickAddress.js</Name>
+      <DisplayName>QuickAddress.js</DisplayName>
+      <WebResourceType>3</WebResourceType>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <CanBeDeleted>1</CanBeDeleted>
+      <IsHidden>0</IsHidden>
+      <FileName>/WebResources/is_QuickAddressQuickAddressjsB59201AA-B476-E311-9AE3-000C2936AE10</FileName>
+    </WebResource>
+  </WebResources>
+  <Languages>
+    <Language>1031</Language>
+    <Language>1033</Language>
+  </Languages>
+</ImportExportXml>

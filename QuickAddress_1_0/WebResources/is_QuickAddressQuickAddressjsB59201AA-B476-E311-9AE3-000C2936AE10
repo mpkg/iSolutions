@@ -2,6 +2,8 @@
 //Constants & Variables
 {
     var MIN_LENGTH = 4;
+//    var API_URL = 'https://quickaddress.cloudapp.net/QuickAddressService.svc/Get';
+
     var API_URL = 'https://crmsuite.isolutions.ch/ModulEasyCreateCH/QuickAddressService.svc/Get';
     var PAUSE = 1000;
     var parameterMaxnum = 3;
@@ -16,16 +18,12 @@ var XrmObject = window.parent.Xrm;
 
 //set PRIVAT, FIRMA as per current entity
 {
-    try {
-        var entityName = XrmObject.Page.data.entity.getEntityName();
-        if (entityName == 'account') {
-            parameterPrivat = 0;
-        }
-        else if (entityName == 'contact') {
-            parameterFirma = 0;
-        }
-    } catch (e) {
-
+    var entityName = XrmObject.Page.data.entity.getEntityName();
+    if (entityName == 'account') {
+        parameterPrivat = 0;
+    }
+    else if (entityName == 'contact') {
+        parameterFirma = 0;
     }
 }
 
@@ -78,11 +76,9 @@ var XrmObject = window.parent.Xrm;
     }
 }
 
-$(window).load(function () {
-
+$(document).ready(function () {
     getDataParam();
     jQuery.support.cors = true;
-
     //define jquery auto complete function
     $("#searchfield")
     .autocomplete({
@@ -138,13 +134,13 @@ function getEntryLabel(fieldName, xml) {
     var node = xml.getElementsByTagName(fieldName);
     if (node.length > 0) {
         if (fieldName == 'tel:firstname' || fieldName == 'tel:street' || fieldName == 'tel:zip') {
-            return node[0].textContent + ' ' || node[0].text + ' ' || node[0].innerText + ' ';
+            return node[0].textContent + ' ';
         }
         else if (fieldName == 'tel:city') {
-            return node[0].textContent || node[0].text || node[0].innerText;
+            return node[0].textContent;
         }
         else {
-            return node[0].textContent + ', ' || node[0].text + ', ' || node[0].innerText + ', ';
+            return node[0].textContent + ', ';
         }
     }
     else {
@@ -192,6 +188,4 @@ function setCRMFormFields(addressInfo) {
     if (XrmObject.Page.getAttribute('emailaddress1')) XrmObject.Page.getAttribute('emailaddress1').setValue(addressInfo[9]);
     if (XrmObject.Page.getAttribute('websiteurl')) XrmObject.Page.getAttribute('websiteurl').setValue(addressInfo[10]);
 }
-
-
 
