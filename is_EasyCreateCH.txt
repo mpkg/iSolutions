@@ -2,7 +2,7 @@
 //Constants & Variables
 {
     var MIN_LENGTH = 4;
-    var API_URL = 'https://quickaddress.cloudapp.net/QuickAddressService.svc/Get'; //'https://moduleasycreatech.isolutions.ch/QuickAddressService.svc/Get';
+    var API_URL = 'https://moduleasycreatech.isolutions.ch/QuickAddressService.svc/Get';
     var PAUSE = 1000;
     var parameterMaxnum = 3;
     var parameterPrivat = 1;
@@ -172,7 +172,7 @@ function getEntryValue(fieldName, xml, type) {
     }
 }
 
-function setCRMFormFields(addressInfo) {    
+function setCRMFormFields(addressInfo) {
     if (addressInfo[11].toLowerCase() == 'person') {
         if (XrmObject.Page.getAttribute('firstname')) XrmObject.Page.getAttribute('firstname').setValue(addressInfo[0]);
         if (XrmObject.Page.getAttribute('lastname')) XrmObject.Page.getAttribute('lastname').setValue(addressInfo[1]);
